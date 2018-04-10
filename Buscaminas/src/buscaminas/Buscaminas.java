@@ -15,7 +15,10 @@ public class Buscaminas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+      Tablero t = new Tablero(5, 5);
+      t.insertarMinas(5);
+      t.imprimirPrueba();
+      System.out.println(t.calcularMina(4, 4));
     }
     
 }
