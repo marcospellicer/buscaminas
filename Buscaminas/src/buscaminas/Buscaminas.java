@@ -5,6 +5,9 @@
  */
 package buscaminas;
 
+import com.sun.prism.j2d.J2DPipeline;
+import java.util.Scanner;
+
 /**
  *
  * @author alumno
@@ -15,10 +18,9 @@ public class Buscaminas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-      Tablero t = new Tablero(5, 5);
-      t.insertarMinas(5);
-      t.imprimirPrueba();
-      System.out.println(t.calcularMina(4, 4));
+       Juego j = new Juego();
+       j.jugar();
+        
     }
     
 }

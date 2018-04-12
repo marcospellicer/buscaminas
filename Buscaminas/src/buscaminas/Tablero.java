@@ -25,51 +25,44 @@ public class Tablero {
        rellenar();
     }
     private void rellenar(){
-        for (int i = 0; i < tabla.length; i++) {
-            for (int j = 0; j < tabla[i].length; j++) {
-               tabla[i][j]=new Casilla();
+        for (int i = 0; i < getTabla().length; i++) {
+            for (int j = 0; j < getTabla()[i].length; j++) {
+                getTabla()[i][j]=new Casilla();
             }
         }
     }
     public void insertarMinas(int nMinas){
         Random r = new Random();
+        setNumMinas(nMinas);
         while (nMinas>0) {
-           int aux = r.nextInt(numFilas);
-          int aux2 = r.nextInt(numColumnas);
+           int aux = r.nextInt(getNumFilas());
+          int aux2 = r.nextInt(getNumColumnas());
             if(!tabla[aux][aux2].isMina()){
-               tabla[aux][aux2].setMina(true);
-               tabla[aux][aux2].setVisible(true);
+                getTabla()[aux][aux2].setMina(true);
+                getTabla()[aux][aux2].setBlanco(false);
                nMinas--;
-            }
-        }
-        for (int i = 0; i < tabla.length; i++) {
-            for (int j = 0; j < tabla[i].length; j++) {
-                if(!tabla[i][j].isMina()){
-                    tabla[i][j].setBlanco(true);
-                    
-                }
             }
         }
     }
     public void imprimirPrueba(){
         System.out.print(" ");
-        for (int i = 0; i < numColumnas; i++) {
+        for (int i = 0; i < getNumColumnas(); i++) {
             System.out.print(" "+i+" ");
         }
         System.out.println("");
  
-        for (int i = 0; i < tabla.length; i++) {
+        for (int i = 0; i < getTabla().length; i++) {
             System.out.print(""+i);
-            for (int j = 0; j < tabla[i].length; j++) {
-                if(tabla[i][j].isBandera()){
+            for (int j = 0; j < getTabla()[i].length; j++) {
+                if(getTabla()[i][j].isBandera()){
                     System.out.print(" B "); 
-                }else if(tabla[i][j].isMina()&&tabla[i][j].isVisible()){
+                }else if(getTabla()[i][j].isMina()&&getTabla()[i][j].isVisible()){
                     System.out.print(" M ");   
-                }else if(tabla[i][j].isMina()&&!tabla[i][j].isVisible()){
+                }else if(getTabla()[i][j].isMina()&&!tabla[i][j].isVisible()){
                     System.out.print(" . "); 
-                }else if(tabla[i][j].isBlanco()&&!tabla[i][j].isVisible()){
+                }else if(getTabla()[i][j].isBlanco()&&!tabla[i][j].isVisible()){
                     System.out.print(" . "); 
-                }else if(tabla[i][j].isBlanco()&&tabla[i][j].isVisible()){
+                }else if(getTabla()[i][j].isBlanco()&&getTabla()[i][j].isVisible()){
                     System.out.print("   "); 
                 }
             }
@@ -77,86 +70,126 @@ public class Tablero {
             System.out.println("");
         }
         System.out.print(" ");
-        for (int i = 0; i < numColumnas; i++) {
+        for (int i = 0; i < getNumColumnas(); i++) {
+            System.out.print(" "+i+" ");
+        }
+    }
+    public void imprimirPruebaa(){
+      System.out.println("");
+        System.out.print(" ");
+        for (int i = 0; i < getNumColumnas(); i++) {
+            System.out.print(" "+i+" ");
+        }
+        System.out.println("");
+ 
+        for (int i = 0; i < getTabla().length; i++) {
+            System.out.print(""+i);
+            for (int j = 0; j < getTabla()[i].length; j++) {
+                
+                if(getTabla()[i][j].isMina()&&getTabla()[i][j].isVisible()){
+                    System.out.print(" M ");   
+                }else if(getTabla()[i][j].isMina()&&!tabla[i][j].isVisible()){
+                    System.out.print(" . "); 
+                }else if(getTabla()[i][j].isBlanco()){
+                    System.out.print(" "+getTabla()[i][j].getNumero()+" "); 
+                }
+            }
+            System.out.print(""+i);
+            System.out.println("");
+        }
+        System.out.print(" ");
+        for (int i = 0; i < getNumColumnas(); i++) {
             System.out.print(" "+i+" ");
         }
     }
     public int calcularMina(int fila , int columna){
         int aux=0;
-        if(fila==0&&columna==0){
-            for (int i = fila ; i <= fila+1; i++) {
-                for (int j = columna; j <= columna+1; j++) {
-                    if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-            
-        }else if(fila>0&&columna==0){
-            for (int i = fila-1 ; i <= fila+1; i++) {
-                for (int j = columna; j <= columna+1; j++) {
-                   if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-        }else if(fila==0&&columna>0){
-            for (int i = fila ; i <= fila+1; i++) {
-                for (int j = columna-1; j <= columna+1; j++) {
-                    if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-        }else if(fila==(numFilas-1)&&columna==(numColumnas-1)){
-            for (int i = fila-1 ; i <= fila; i++) {
-                for (int j = columna-1; j <= columna; j++) {
-                    if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-        }else if(fila<(numFilas-1)&&columna==(numColumnas-1)){
-            for (int i = fila-1 ; i <= fila+1; i++) {
-                for (int j = columna-1; j <= columna; j++) {
-                   if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-        }else if(fila==(numFilas-1)&&columna<(numColumnas-1)){
-            for (int i = fila-1 ; i <= fila; i++) {
-                for (int j = columna-1; j <= columna++; j++) {
-                    if(tabla[i][j].isMina()){
-                    aux++;
-                }
-                }
-            }
-        }else{    
-        for (int i = fila-1; i <= fila+1 ; i++) {
-            for (int j = columna-1 ; j <= columna+1; j++) {
-                if(tabla[i][j].isMina()){
-                    aux++;
+        for (int i = fila-1; i <= fila+1; i++) {
+            for (int j = columna-1; j <= columna+1; j++) {
+                if(i < getTabla().length && i>=0 ){
+                   if(j < getTabla()[i].length && j >=0){
+                       if(getTabla()[i][j].isMina()){
+                           aux++;
+                       }
+                   } 
                 }
             }
         }
-        }
-        
         return aux;
     }
     public Casilla getCasiilla(int fila , int columna){
-        return tabla[fila][columna];
+        return getTabla()[fila][columna];
     }
-    public void contarCasillas(int nMinas){
-       int aux = 0;
-        for (int i = 0; i < tabla.length; i++) {
-            for (int j = 0; j < tabla[i].length; j++) {
+    public void calcularTablero(){
+
+        for (int i = 0; i < getTabla().length; i++) {
+            for (int j = 0; j < getTabla()[i].length; j++) {
                 if(!tabla[i][j].isMina()){
-                    tabla[i][j].setNumero(calcularMina(i, j));  
+                  getTabla()[i][j].setNumero(calcularMina(i, j)); 
+                  if(tabla[i][j].getNumero()>0){
+                      tabla[i][j].setBlanco(false);
+                  }
+                    
                 }
             }
         }
-        System.out.println(aux);
+        
+    }
+
+    /**
+     * @return the numFilas
+     */
+    public int getNumFilas() {
+        return numFilas;
+    }
+
+    /**
+     * @param numFilas the numFilas to set
+     */
+    public void setNumFilas(int numFilas) {
+        this.numFilas = numFilas;
+    }
+
+    /**
+     * @return the numColumnas
+     */
+    public int getNumColumnas() {
+        return numColumnas;
+    }
+
+    /**
+     * @param numColumnas the numColumnas to set
+     */
+    public void setNumColumnas(int numColumnas) {
+        this.numColumnas = numColumnas;
+    }
+
+    /**
+     * @return the numMinas
+     */
+    public int getNumMinas() {
+        return numMinas;
+    }
+
+    /**
+     * @param numMinas the numMinas to set
+     */
+    public void setNumMinas(int numMinas) {
+        this.numMinas = numMinas;
+    }
+
+    /**
+     * @return the tabla
+     */
+    public Casilla[][] getTabla() {
+        return tabla;
+    }
+
+    /**
+     * @param tabla the tabla to set
+     */
+    public void setTabla(Casilla[][] tabla) {
+        this.tabla = tabla;
     }
     
     
