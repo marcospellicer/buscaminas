@@ -52,12 +52,16 @@ public class Juego {
                 System.out.println("dime la columna");
                 int col=s.nextInt();
                 if(coordenadasCorrectas(fil, col)){
+                    
+                    
                     if(descubrirCasilla(fil, col)){
                             decubrirBlanco(fil, col);
                     }else{
                         finalizarJuego();
                         salir=true;
                     }
+                }else{
+                    System.out.println("coordenadas incorrectas");
                 }
                 break;
             }
@@ -66,9 +70,22 @@ public class Juego {
                 int fil=s.nextInt();
                 System.out.println("dime la columna");
                 int col=s.nextInt();
+                int min=0;
+                for (int i = 0; i < tablero.getTabla().length; i++) {
+                for (int j = 0; j < tablero.getTabla()[i].length; j++) {
+                if(tablero.getTabla()[i][j].isBandera()){
+                    min++;
+                }
+            }
+        }
                 if(coordenadasCorrectas(fil, col)){
                    if(!tablero.getTabla()[fil][col].isBandera()){
-                      tablero.getTabla()[fil][col].setBandera(true);  
+                       if(min<numMinas){
+                         tablero.getTabla()[fil][col].setBandera(true);   
+                       }else{
+                           System.out.println("no hay tantas minas");
+                       }
+                       
                    }else{
                        System.out.println("ya hay bandera");
                    } 
@@ -218,34 +235,28 @@ public class Juego {
        }
        return false;
     }
-    private void decubrirBlanco(int fila , int columna){
+
+private void decubrirBlanco(int fila , int columna){
         tablero.getTabla()[fila][columna].setVisible(true);
+        boolean hay = false;
         int axu=0;
         for (int i = fila-1; i <= fila+1; i++) {
             for (int j = columna-1; j <= columna+1; j++) {
-                if(i<tablero.getTabla().length && i>=0 && j<tablero.getTabla()[i].length && j>=0){
-                    if(tablero.getTabla()[i][j].isBlanco()){
-                        tablero.getTabla()[i][j].setVisible(true);
-                        decubrirBlancoo(i, j);
+                if(coordenadasCorrectas(i, j)){
+                    if(descubrirCasilla(i, j)){
+                        if(tablero.getTabla()[i][j].isBlanco()){
+                            decubrirBlanco(i, j);
+                        }
+                        
+                       tablero.getTabla()[i][j].setVisible(true);
+                        
                     }
                 }
             }
         }
         
+        
     }
-    private void decubrirBlancoo(int fila , int columna){
-        int axu=0;
-        for (int i = fila-1; i <= fila+1; i++) {
-            for (int j = columna-1; j <= columna+1; j++) {
-                if(i<tablero.getTabla().length && i>=0 && j<tablero.getTabla()[i].length && j>=0){
-                    if(tablero.getTabla()[i][j].isBlanco()){
-                        tablero.getTabla()[i][j].setVisible(true);
-                    }
-                }
-            }
-        }  
-    }
-
     private boolean  partidaGanada(){
         int aux=0;
         for (int i = 0; i < tablero.getTabla().length; i++) {
